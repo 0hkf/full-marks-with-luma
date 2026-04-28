@@ -218,7 +218,7 @@
       feedbackEl.innerHTML = `
         <strong>أحسنتِ! إجابة رائعة 🌟</strong>
         Great job! Correct answer!
-        <img class="small-luma" src="assets/luma.svg" alt="Luma" />
+        <img class="small-luma" src="assets/luma-character.jpeg" alt="Luma" />
       `;
     } else {
       feedbackEl.className = 'feedback wrong';

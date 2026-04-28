@@ -91,6 +91,23 @@ body {
   flex-wrap: wrap;
 }
 
+.header-home {
+  justify-content: center;
+  text-align: center;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.header-home .home-logo {
+  display: block;
+  margin: 0 auto;
+}
+
+.header-home .header-text {
+  text-align: center;
+  width: 100%;
+}
+
 .header-text {
   text-align: right;
 }
@@ -106,6 +123,13 @@ body {
   margin: 5px 0 0;
   font-size: 1rem;
   color: var(--ink-light);
+}
+
+.app-name-ar {
+  font-size: clamp(1.25rem, 2.8vw, 1.7rem);
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  color: #6853bf;
 }
 
 .school-name {
@@ -126,7 +150,13 @@ body {
 
 .luma-image {
   width: 100%;
-  max-width: 260px;
+  max-width: 320px;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center 40%;
+  border-radius: 26px;
+  border: 3px solid #e7dcff;
+  box-shadow: 0 14px 24px rgba(100, 80, 150, 0.18);
   display: block;
   margin: 0 auto;
 }
@@ -264,6 +294,16 @@ body {
   font-weight: 700;
   color: #4a7482;
   line-height: 1.6;
+}
+
+.unit-luma-thumb {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  object-position: center 40%;
+  border-radius: 50%;
+  border: 2px solid #e5d6ff;
+  box-shadow: 0 4px 10px rgba(98, 95, 146, 0.2);
 }
 
 .progress-wrap {
@@ -449,8 +489,12 @@ body {
 }
 
 .small-luma {
-  width: 72px;
-  height: auto;
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  object-position: center 40%;
+  border-radius: 50%;
+  border: 2px solid #e5d6ff;
   vertical-align: middle;
   margin-inline-start: 8px;
 }
