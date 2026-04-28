@@ -1,0 +1,38 @@
+<svg width="360" height="420" viewBox="0 0 360 420" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Luma character">
+  <defs>
+    <linearGradient id="dress" x1="86" y1="220" x2="270" y2="380" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#BCEAE3"/>
+      <stop offset="1" stop-color="#DCCBFF"/>
+    </linearGradient>
+    <linearGradient id="hair" x1="84" y1="80" x2="280" y2="180" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5DAAA8"/>
+      <stop offset="1" stop-color="#7BBFAE"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="180" cy="210" r="190" fill="#F7FBFF"/>
+  <ellipse cx="138" cy="95" rx="24" ry="54" transform="rotate(-28 138 95)" fill="url(#hair)"/>
+  <ellipse cx="224" cy="95" rx="24" ry="54" transform="rotate(28 224 95)" fill="url(#hair)"/>
+  <circle cx="180" cy="140" r="76" fill="url(#hair)"/>
+  <circle cx="180" cy="145" r="65" fill="#FFE9D8"/>
+
+  <ellipse cx="154" cy="141" rx="9" ry="11" fill="#2F4B57"/>
+  <ellipse cx="206" cy="141" rx="9" ry="11" fill="#2F4B57"/>
+  <circle cx="151" cy="138" r="3" fill="#fff"/>
+  <circle cx="203" cy="138" r="3" fill="#fff"/>
+
+  <path d="M168 164C171.5 168 188.5 168 192 164" stroke="#F0928D" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="138" cy="158" r="8" fill="#FFC8C2"/>
+  <circle cx="222" cy="158" r="8" fill="#FFC8C2"/>
+
+  <path d="M99 248C110 212 139 192 180 192C221 192 250 212 261 248V339H99V248Z" fill="url(#dress)"/>
+  <path d="M147 223C156 233 167 238 180 238C193 238 204 233 213 223" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+
+  <ellipse cx="86" cy="275" rx="28" ry="14" transform="rotate(-18 86 275)" fill="#FFE6A7"/>
+  <ellipse cx="274" cy="275" rx="28" ry="14" transform="rotate(18 274 275)" fill="#FFE6A7"/>
+
+  <ellipse cx="180" cy="368" rx="70" ry="18" fill="#E9EFF5"/>
+
+  <path d="M74 112L81 126L96 128L84 138L87 153L74 145L61 153L64 138L52 128L67 126L74 112Z" fill="#FFE58C"/>
+  <path d="M288 96L293 106L304 108L296 116L298 127L288 122L278 127L280 116L272 108L283 106L288 96Z" fill="#D4B8FF"/>
+</svg>
