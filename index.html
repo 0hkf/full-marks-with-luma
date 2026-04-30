@@ -3,61 +3,455 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Full Marks with Luma</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>Top Goal 2 – Part 2</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Tajawal:wght@400;500;700;800&display=swap');
+
+      :root {
+        --violet: #8d77d8;
+        --violet-dark: #5f4bb2;
+        --mint: #b7dcd1;
+        --ink: #5b7381;
+        --panel: #efeff1;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: 'Tajawal', sans-serif;
+        background: #f2f2f4;
+        color: var(--ink);
+        min-height: 100vh;
+        padding: 10px;
+      }
+
+      .app {
+        max-width: 1160px;
+        margin: 0 auto;
+        background: var(--panel);
+        border: 4px solid #d8c7f6;
+        border-radius: 28px;
+        padding: 20px;
+      }
+
+      .title {
+        margin: 0;
+        text-align: center;
+        color: var(--violet-dark);
+        font-family: 'Baloo 2', cursive;
+        font-size: clamp(2rem, 5vw, 3.6rem);
+      }
+
+      .subtitle {
+        text-align: center;
+        margin: 8px 0 14px;
+        font-size: clamp(1.2rem, 2.8vw, 2rem);
+        font-weight: 800;
+      }
+
+      .score-bar {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+
+      .score-pill {
+        border: 4px solid #d8c7f6;
+        border-radius: 999px;
+        padding: 8px 20px;
+        font-size: clamp(1.3rem, 2.7vw, 2rem);
+        color: var(--violet-dark);
+        font-weight: 800;
+        font-family: 'Baloo 2', cursive;
+        background: #ece7f7;
+      }
+
+      .section-title {
+        margin: 14px 0 10px;
+        font-size: clamp(1.9rem, 3.6vw, 3rem);
+        font-weight: 800;
+        color: #607786;
+      }
+
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .btn {
+        border: 4px solid #bca5ef;
+        border-radius: 28px;
+        background: #f5f4f8;
+        color: #5b49a7;
+        padding: 16px 12px;
+        font-family: 'Baloo 2', cursive;
+        font-size: clamp(1.2rem, 2.4vw, 2rem);
+        font-weight: 800;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .btn.small {
+        font-size: clamp(1rem, 1.8vw, 1.5rem);
+      }
+
+      .btn.active {
+        background: #dfe6f5;
+        border-color: #9a7fe2;
+      }
+
+      .general-btn {
+        width: 100%;
+        margin: 8px 0 2px;
+        border-color: #abd3c7;
+        color: #2d7f72;
+        background: #d9ece6;
+      }
+
+      .box {
+        border: 4px solid #ccb7f2;
+        border-radius: 30px;
+        background: #f7f6f8;
+        padding: 16px;
+      }
+
+      .qtext {
+        font-size: clamp(1.15rem, 2vw, 1.7rem);
+        line-height: 1.8;
+        color: #607786;
+        font-weight: 700;
+      }
+
+      .answers {
+        margin-top: 12px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .ans {
+        border: 3px solid #c9b4f0;
+        border-radius: 18px;
+        padding: 10px;
+        background: #fff;
+        color: #4b6390;
+        text-align: right;
+        font-weight: 700;
+        cursor: pointer;
+        font-size: clamp(1rem, 1.8vw, 1.35rem);
+      }
+
+      .ans:hover { background: #f5efff; }
+      .ans.correct { border-color: #3ea873; background: #eafff3; }
+      .ans.wrong { border-color: #d2617a; background: #fff0f4; }
+
+      .feedback {
+        min-height: 90px;
+        margin-top: 14px;
+        font-size: clamp(1rem, 1.8vw, 1.35rem);
+        line-height: 1.8;
+        font-weight: 700;
+      }
+
+      .actions {
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .footer {
+        margin-top: 14px;
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: #607786;
+      }
+
+      @media (max-width: 1024px) {
+        .app { padding: 16px; }
+        .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+
+      @media (max-width: 640px) {
+        body { padding: 6px; }
+        .app { border-radius: 20px; padding: 12px; }
+        .grid-3 { grid-template-columns: 1fr; }
+        .section-title { text-align: center; }
+      }
+    </style>
   </head>
   <body>
-    <div class="page">
-      <span class="decor-star" style="top: 38px; left: 30px;">⭐</span>
-      <span class="decor-star" style="top: 210px; right: 22px;">⭐</span>
-      <span class="decor-heart" style="top: 105px; left: 105px;">💛</span>
-      <span class="decor-heart" style="top: 362px; right: 86px;">💜</span>
-      <span class="decor-pencil" style="top: 300px; left: 44px;">✏️</span>
-      <span class="decor-pencil" style="bottom: 40px; right: 28px;">✏️</span>
-      <span class="decor-book" style="bottom: 120px; left: 20px;"></span>
-      <span class="decor-cloud" style="top: 160px; right: 160px;"></span>
+    <main class="app">
+      <h1 class="title">Top Goal 2 – Part 2</h1>
+      <p class="subtitle">الوحدات 5 و6 و7 | بنك أسئلة شامل + تصحيح فوري</p>
 
-      <header class="header-card header-home">
-        <img class="home-logo" src="assets/ministry-logo.svg" alt="Ministry of Education logo" width="270" height="68" />
-        <div class="header-text">
-          <h1>Full Marks with Luma</h1>
-          <p class="school-name">73rd Elementary School</p>
-          <p>تطبيق مراجعة اللغة الإنجليزية للاختبارات المركزية</p>
-        </div>
-      </header>
+      <div class="score-bar">
+        <div class="score-pill">صح: <span id="correctCount">0</span></div>
+        <div class="score-pill">أسئلة: <span id="totalCount">0</span></div>
+      </div>
 
-      <section class="main-card">
-        <div class="intro-note">
-          <p><strong>مرحباً يا بطلة 🌟</strong></p>
-          <p>ابدئي المراجعة للوحدات 5 و 6 و 7، ومع كل إجابة ستصبحين أقرب للعلامة الكاملة.</p>
-          <p><strong>Welcome!</strong> Start reviewing Units 5, 6, and 7 to get full marks.</p>
-        </div>
+      <h2 class="section-title">اختاري الوحدة</h2>
+      <div class="grid-3" id="units">
+        <button class="btn" data-unit="7">Unit 7<br/>Trips</button>
+        <button class="btn" data-unit="6">Unit 6<br/>Outdoor Activities</button>
+        <button class="btn" data-unit="5">Unit 5<br/>Storylines</button>
+      </div>
 
-        <h2 class="units-title">اختاري الوحدة وابدئي المراجعة</h2>
-        <div class="units-grid">
-          <a class="unit-card" href="unit5.html">
-            <h3>Unit 5: Storylines</h3>
-            <p>Stories, vocabulary, Past Progressive, and suggestions.</p>
-          </a>
-          <a class="unit-card" href="unit6.html">
-            <h3>Unit 6: Outdoor Activities</h3>
-            <p>Activities, equipment, safety, and When/While grammar.</p>
-          </a>
-          <a class="unit-card" href="unit7.html">
-            <h3>Unit 7: Trips</h3>
-            <p>Travel terms, phrasal verbs, Present Perfect, and practice.</p>
-          </a>
-          <a class="unit-card" href="review-assistant.html">
-            <h3>🤖 AI Review Assistant</h3>
-            <p>مساعد تفاعلي للوحدات 5–6–7 مع تصحيح فوري عربي/English.</p>
-          </a>
-        </div>
+      <h2 class="section-title">General Questions (لحالها)</h2>
+      <button class="btn general-btn" data-cat="general">General Questions | أسئلة عامة</button>
+
+      <h2 class="section-title">باقي الأقسام</h2>
+      <div class="grid-3" id="cats">
+        <button class="btn small" data-cat="composition">Guided Composition</button>
+        <button class="btn small" data-cat="grammar">Grammar</button>
+        <button class="btn small" data-cat="vocab">Vocabulary + Controlled Writing</button>
+      </div>
+
+      <h2 class="section-title">السؤال</h2>
+      <section class="box" id="questionBox">
+        <div class="qtext" id="questionText">اختاري الوحدة ثم الفئة للبدء...</div>
+        <div class="answers" id="answers"></div>
       </section>
 
-      <footer class="footer-card">
-        <p>اسمي / هند اللهيبي — Created by / Hind Bakheet Al-Luhaibi</p>
-        <p>مديرة المدرسة / عبير الحربي — School Principal / Abeer Al-Harbi</p>
-      </footer>
-    </div>
+      <h2 class="section-title">إجابتك والتصحيح</h2>
+      <section class="box feedback" id="feedback">جاهزة؟ اختاري إجابة من الخيارات 👏</section>
+
+      <div class="actions">
+        <button class="btn small" id="newQBtn">سؤال جديد</button>
+      </div>
+
+      <div class="footer">المنفذة/ هند اللهيبي</div>
+    </main>
+
+    <script>
+      const bank = {
+        5: {
+          general: [
+            { q: 'What is your favorite kind of story?', options: ['Comedy', 'Hiking', 'Passport', 'Helmet'], a: 0, why: 'Favorite story type belongs to Unit 5 genres.' },
+            { q: "What were you doing at 6 o'clock yesterday?", options: ['I was watching a movie.', 'I have watched movie.', 'I watching movie.', 'I will watch movie.'], a: 0, why: 'Past continuous: was/were + verb-ing.' },
+            { q: 'Who is your favorite story character?', options: ['My favorite character is the hero.', 'My favorite is a tent.', 'My favorite is a taxi.', 'My favorite is a station.'], a: 0, why: 'Character is a person in a story.' },
+            { q: 'What kinds of stories do you dislike?', options: ['I dislike horror stories.', 'I dislike fishing stories.', 'I dislike helmets.', 'I dislike railroads.'], a: 0, why: 'Horror is a story type in this unit.' },
+            { q: 'What are the people in stories called?', options: ['Characters', 'Passengers', 'Campers', 'Drivers'], a: 0, why: 'People in stories are characters.' },
+            { q: 'What can you draw to plan a story?', options: ['A storyboard', 'A passport', 'A surfboard', 'A platform'], a: 0, why: 'Storyboard is used to plan story events.' },
+            { q: 'Do you have a favorite story?', options: ['Yes, I do. The Lion and the Mouse.', 'No, I am a suitcase.', 'I check in the story.', 'I take off the story.'], a: 0, why: 'This is a suitable general answer.' },
+            { q: 'What happens in act 3 of a story?', options: ['Climax and resolution', 'Train and station', 'Campfire and hotdog', 'Taxi and traffic'], a: 0, why: 'Story structure includes climax and resolution.' }
+          ],
+          vocab: [
+            { q: 'This type of story creates fear.', options: ['Horror', 'Comedy', 'Documentary', 'Musical'], a: 0, why: 'Horror stories create fear.' },
+            { q: 'This type of story makes people laugh.', options: ['Comedy', 'Thriller', 'Mystery', 'Drama'], a: 0, why: 'Comedy is funny.' },
+            { q: 'Story about invented future/space:', options: ['Sci-fi', 'Western', 'Play', 'Fairy tale'], a: 0, why: 'Sci-fi is science fiction.' },
+            { q: 'Odd word: cartoon – school – fairy tale – mystery', options: ['school', 'cartoon', 'fairy tale', 'mystery'], a: 0, why: 'School is not a story type.' },
+            { q: 'Opposite of beginning:', options: ['ending', 'climax', 'plot', 'acts'], a: 0, why: 'Beginning opposite is ending.' },
+            { q: 'Whisper means:', options: ['speak quietly', 'shout loudly', 'run fast', 'draw map'], a: 0, why: 'Whisper = speak very softly.' },
+            { q: 'Movie about real facts is:', options: ['documentary', 'comedy', 'horror', 'western'], a: 0, why: 'Documentary presents real facts.' },
+            { q: 'Detective solves crime in:', options: ['mystery', 'musical', 'cartoon', 'play'], a: 0, why: 'Mystery usually includes solving a crime.' },
+            { q: 'Exciting action story is:', options: ['thriller', 'drama', 'documentary', 'animation'], a: 0, why: 'Thriller = action and suspense.' }
+          ],
+          grammar: [
+            { q: 'I ___ watching a movie.', options: ['was', 'were', 'is', 'are'], a: 0, why: 'I + was + verb-ing.' },
+            { q: 'They ___ screaming during the movie.', options: ['were', 'was', 'is', 'am'], a: 0, why: 'They + were.' },
+            { q: 'She ___ not watching a play.', options: ['was', 'were', 'is', 'are'], a: 0, why: 'She + was not.' },
+            { q: '___ you enjoying the cartoon?', options: ['Were', 'Was', 'Is', 'Do'], a: 0, why: 'Question with you uses were.' },
+            { q: 'How about ___ a horror movie?', options: ['seeing', 'see', 'saw', 'sees'], a: 0, why: 'How about + verb-ing.' },
+            { q: "Why don't we ___ a musical?", options: ['choose', 'choosing', 'chose', 'chooses'], a: 0, why: "Why don't we + base verb." },
+            { q: 'They were (watch) a play.', options: ['watching', 'watch', 'watched', 'watches'], a: 0, why: 'Past continuous needs verb-ing.' },
+            { q: 'Adam (were) acting in a sci-fi movie.', options: ['was', 'were', 'is', 'are'], a: 0, why: 'Adam is singular: was.' },
+            { q: 'Order: You / were / covering / your / ears', options: ['You were covering your ears.', 'You covering were your ears.', 'Were you covering ears your.', 'Your ears were you covering.'], a: 0, why: 'Correct subject + be + verb-ing order.' }
+          ],
+          composition: [
+            { q: 'Best opening for movie scene paragraph:', options: ['My favorite scene is from an animation movie.', 'Passport is in my bag.', 'I wear helmet in train.', 'The taxi took off.'], a: 0, why: 'This is a correct composition starter.' },
+            { q: "Useful expression for opinion:", options: ['What I loved was...', 'Check in yet', 'While train station', 'Was/are story'], a: 0, why: 'Unit 5 expression.' },
+            { q: 'Correct closing suggestion:', options: ["Why don't we watch it together tonight?", 'How about watch together tonight?', 'What about we watch it?', 'Why we don\'t watching?'], a: 0, why: "Why don't we + base verb." }
+          ]
+        },
+        6: {
+          general: [
+            { q: 'What activities do you do outside?', options: ['I go hiking and camping.', 'I check in and check out.', 'I use passport and taxi.', 'I depart from platform.'], a: 0, why: 'Hiking/camping are outdoor activities.' },
+            { q: 'Which activities do you want to try?', options: ['I want to try rafting because it is exciting.', 'I want to try suitcase.', 'I want to try terminal.', 'I want to try security.'], a: 0, why: 'Rafting is a correct activity.' },
+            { q: 'What is your worst fear?', options: ['My worst fear is high cliffs.', 'My fear is passport.', 'My fear is grammar.', 'My fear is station.'], a: 0, why: 'Cliffs are related to outdoor danger.' },
+            { q: 'What is a cliff?', options: ['A high edge where land drops down.', 'A train ticket.', 'A travel bag.', 'A story type.'], a: 0, why: 'Correct meaning of cliff.' },
+            { q: 'Opposite of outdoor:', options: ['indoor', 'helmet', 'desert', 'canoe'], a: 0, why: 'Outdoor opposite is indoor.' },
+            { q: 'Safety in outdoor activities means:', options: ['Use right equipment and follow rules.', 'Run without helmet.', 'Swim without jacket.', 'Climb alone at night.'], a: 0, why: 'Safety requires proper equipment.' },
+            { q: 'Things needed for rafting:', options: ['raft, life jacket, helmet', 'passport, ticket, taxi', 'plot, climax, ending', 'station, terminal, traffic'], a: 0, why: 'These are rafting items.' },
+            { q: 'Do you prefer outdoors or home?', options: ['I prefer outdoors because I like nature.', 'I prefer check in.', 'I prefer runway.', 'I prefer document.'], a: 0, why: 'Suitable personal general answer.' }
+          ],
+          vocab: [
+            { q: 'Odd word: hiking – camping – tent – fishing', options: ['tent', 'hiking', 'camping', 'fishing'], a: 0, why: 'Tent is equipment, others are activities.' },
+            { q: 'Two water activities:', options: ['surfing and rafting', 'hiking and climbing', 'camping and backpacking', 'mountain biking and hiking'], a: 0, why: 'Surfing/rafting are water activities.' },
+            { q: 'Activity with long walks:', options: ['hiking', 'fishing', 'rafting', 'surfing'], a: 0, why: 'Hiking includes long walking.' },
+            { q: 'Protection while cycling:', options: ['helmet', 'passport', 'suitcase', 'ticket'], a: 0, why: 'Helmet protects the head.' },
+            { q: 'Odd word: canoe – outdoors – helmet – surfboard', options: ['outdoors', 'canoe', 'helmet', 'surfboard'], a: 0, why: 'Outdoors is not an item like others.' },
+            { q: 'Sleeping outdoors activity:', options: ['camping', 'fishing', 'surfing', 'climbing'], a: 0, why: 'Camping means staying outdoors.' },
+            { q: 'Needed for mountain biking:', options: ['bike and helmet', 'passport and ticket', 'storyboard and plot', 'taxi and platform'], a: 0, why: 'Correct equipment for biking.' },
+            { q: 'Campsite cooking usually uses:', options: ['campfire', 'runway', 'terminal', 'security'], a: 0, why: 'Campfire is used in camping.' },
+            { q: 'Canoeing needs a:', options: ['canoe', 'train', 'documentary', 'station'], a: 0, why: 'Canoeing uses a canoe.' }
+          ],
+          grammar: [
+            { q: 'They ___ hiking in the forest.', options: ['were', 'was', 'is', 'am'], a: 0, why: 'They + were.' },
+            { q: 'While I was hiking, I ___ a snake.', options: ['saw', 'see', 'seen', 'seeing'], a: 0, why: 'Short action in past simple: saw.' },
+            { q: 'When they ___, they set up tents.', options: ['arrived', 'arriving', 'arrive', 'arrives'], a: 0, why: 'Past simple: arrived.' },
+            { q: 'Dad was lighting campfire ___ I was fishing.', options: ['while', 'when', 'do', 'did'], a: 0, why: 'Two long actions use while.' },
+            { q: 'I was looking at water when sandwich ___.', options: ['fell', 'falling', 'falls', 'is falling'], a: 0, why: 'Short interrupting action = fell.' },
+            { q: 'I didn’t (knew) what to do.', options: ['know', 'knew', 'knowing', 'known'], a: 0, why: 'After did not use base verb.' },
+            { q: 'I ___ a bear last weekend.', options: ['saw', 'seeing', 'see', 'seen'], a: 0, why: 'Past simple: saw.' },
+            { q: 'While they ___, rain started.', options: ['were canoeing', 'canoeing', 'canoed', 'are canoeing'], a: 0, why: 'Long action uses past continuous.' },
+            { q: 'Dad didn’t ___ a shark when surfing.', options: ['see', 'saw', 'seen', 'seeing'], a: 0, why: 'After didn’t use base verb.' }
+          ],
+          composition: [
+            { q: 'Best sentence for safety paragraph:', options: ["It's important to be safe in outdoor activities.", 'I has went outside.', 'Passport is climbing.', 'Taxi is helmet.'], a: 0, why: 'Correct useful expression.' },
+            { q: 'Correct useful expression:', options: ['You should wear a helmet.', 'You should wore helmet.', 'You should wearing helmet.', 'You should wears helmet.'], a: 0, why: 'You should + base verb.' },
+            { q: 'Correct while sentence:', options: ['While I was hiking, I stayed on the path.', 'While I hiking, I stayed path.', 'While I was hike, I stay path.', 'While I was hiked, I staying path.'], a: 0, why: 'Correct past continuous structure.' }
+          ]
+        },
+        7: {
+          general: [
+            { q: 'Different ways to travel include:', options: ['taxi, train, airplane', 'helmet, tent, raft', 'plot, climax, ending', 'campfire, hotdog, forest'], a: 0, why: 'These are means of transportation.' },
+            { q: 'Favorite way to travel and why:', options: ['I like planes because they are fast.', 'I like passport because it flies.', 'I like station because it swims.', 'I like cliff because it drives.'], a: 0, why: 'Plane is a travel method with reason.' },
+            { q: 'Would you like to travel?', options: ['Yes, I would feel excited.', 'No, I was train.', 'Yes, I check in cliff.', 'No, I am suitcase.'], a: 0, why: 'Correct personal response.' },
+            { q: 'Field trip example:', options: ['I have been on a trip to a farm.', 'I have been on a ticket.', 'I have been on a passport.', 'I have been on a platform.'], a: 0, why: 'Farm trip is a valid example.' },
+            { q: 'How often do you use a taxi?', options: ['I sometimes use a taxi.', 'I whisper a taxi.', 'I draw a taxi story.', 'I climb a taxi.'], a: 0, why: 'Natural general answer.' },
+            { q: 'Taxi, plane, train are...', options: ['means of transportation', 'story characters', 'camping tools', 'movie genres'], a: 0, why: 'They are travel transport modes.' },
+            { q: 'Take off means...', options: ['to go up in the sky', 'to check out hotel', 'to buy a suitcase', 'to ride a horse'], a: 0, why: 'Take off = plane leaves ground.' },
+            { q: 'To add means...', options: ['calculate total numbers', 'subtract numbers', 'divide only', 'hide numbers'], a: 0, why: 'Add is total calculation.' }
+          ],
+          vocab: [
+            { q: 'Odd word: security – passenger – suitcase – climbing', options: ['climbing', 'security', 'passenger', 'suitcase'], a: 0, why: 'Climbing is not trip vocabulary here.' },
+            { q: 'A document for travel abroad is:', options: ['passport', 'flashlight', 'storyboard', 'hiking boots'], a: 0, why: 'Passport is required for international travel.' },
+            { q: 'Opposite of check in:', options: ['check out', 'take off', 'find out', 'go out'], a: 0, why: 'Hotel/airport opposite is check out.' },
+            { q: 'Phrasal verb for discover information:', options: ['find out', 'get away', 'check in', 'take off'], a: 0, why: 'Find out = discover.' },
+            { q: 'Phrasal verb for plane going into sky:', options: ['take off', 'land', 'arrive', 'prepare'], a: 0, why: 'Take off happens at departure.' },
+            { q: 'Passenger at hotel first does:', options: ['check in', 'check out', 'take off', 'land'], a: 0, why: 'First step is check in.' },
+            { q: 'Odd word: already – we – just – yet', options: ['we', 'already', 'just', 'yet'], a: 0, why: 'We is pronoun, others are adverbs.' },
+            { q: 'Two transport means:', options: ['subway and taxi', 'tent and raft', 'plot and play', 'helmet and boots'], a: 0, why: 'Subway/taxi are transport methods.' },
+            { q: 'Word meaning instructions on route:', options: ['directions', 'terminal', 'security', 'passenger'], a: 0, why: 'Directions guide you where to go.' }
+          ],
+          grammar: [
+            { q: 'He ___ called the taxi.', options: ['has', 'have', 'is', 'are'], a: 0, why: 'He + has + past participle.' },
+            { q: 'The plane hasn’t taken off ___.', options: ['yet', 'already', 'just', 'ever'], a: 0, why: 'Yet in negative expected action.' },
+            { q: 'We have ___ the tickets.', options: ['bought', 'buy', 'buying', 'buys'], a: 0, why: 'Past participle after have.' },
+            { q: 'She has already ___ her passport.', options: ['found', 'find', 'finding', 'finds'], a: 0, why: 'Has + past participle.' },
+            { q: 'Write participles: speak, write, buy, fly', options: ['spoken, written, bought, flown', 'spoke, wrote, bought, flew', 'speaks, writes, buys, flies', 'spoken, write, buy, flown'], a: 0, why: 'Correct past participle forms.' },
+            { q: 'Correct: I have (visit) the beach before.', options: ['visited', 'visit', 'visits', 'visiting'], a: 0, why: 'Have + past participle.' },
+            { q: 'The plane ___ departed.', options: ['has', 'have', 'was', 'are'], a: 0, why: 'Plane singular takes has.' },
+            { q: 'Mom has ___ printed the tickets.', options: ['already', 'yet', 'while', 'when'], a: 0, why: 'Already for completed action earlier than expected.' },
+            { q: 'Negative: You have travelled on airplane.', options: ["You haven't travelled on the airplane.", 'You not travelled on airplane.', 'You have not travel airplane.', "You hasn't travelled airplane."], a: 0, why: 'Use have not / haven\'t + participle.' }
+          ],
+          composition: [
+            { q: 'Best beginning for trip blog:', options: ['I have planned a fun field trip.', 'I planning trip yesterday.', 'I am planned trip.', 'I has plan trip.'], a: 0, why: 'Present perfect for planning.' },
+            { q: 'Correct sentence with just:', options: ['They have just opened a new exhibit.', 'They just have open exhibit.', 'They has just opened exhibit.', 'They have opened justed exhibit.'], a: 0, why: 'Have + just + participle.' },
+            { q: 'Useful direction sentence:', options: ['The directions say to take the subway.', 'Directions is took subway.', 'The directions saying subway took.', 'Directions have take subway.'], a: 0, why: 'Correct guided expression.' }
+          ]
+        }
+      };
+
+      const unitBtns = [...document.querySelectorAll('[data-unit]')];
+      const catBtns = [...document.querySelectorAll('[data-cat]')];
+      const qText = document.getElementById('questionText');
+      const answersEl = document.getElementById('answers');
+      const feedbackEl = document.getElementById('feedback');
+      const newQBtn = document.getElementById('newQBtn');
+      const correctEl = document.getElementById('correctCount');
+      const totalEl = document.getElementById('totalCount');
+
+      let selectedUnit = null;
+      let selectedCat = null;
+      let currentQuestion = null;
+      let answered = false;
+      let correct = 0;
+      let total = 0;
+      const used = {};
+
+      function markActive(btns, current) {
+        btns.forEach((b) => b.classList.toggle('active', b === current));
+      }
+
+      function poolKey() {
+        return `${selectedUnit}-${selectedCat}`;
+      }
+
+      function nextQuestion() {
+        if (!selectedUnit || !selectedCat) {
+          feedbackEl.textContent = 'اختاري الوحدة والفئة أولاً.';
+          return;
+        }
+
+        const arr = bank[selectedUnit][selectedCat];
+        if (!arr || arr.length === 0) {
+          feedbackEl.textContent = 'لا توجد أسئلة حالياً في هذا القسم.';
+          return;
+        }
+
+        const key = poolKey();
+        if (!used[key] || used[key].length >= arr.length) {
+          used[key] = [];
+        }
+
+        const available = arr.map((_, i) => i).filter((i) => !used[key].includes(i));
+        const idx = available[Math.floor(Math.random() * available.length)];
+        used[key].push(idx);
+
+        currentQuestion = arr[idx];
+        answered = false;
+        qText.textContent = currentQuestion.q;
+        feedbackEl.textContent = 'اختاري الإجابة الصحيحة من الخيارات 👇';
+        renderOptions(currentQuestion.options);
+      }
+
+      function renderOptions(options) {
+        answersEl.innerHTML = '';
+        options.forEach((opt, i) => {
+          const b = document.createElement('button');
+          b.className = 'ans';
+          b.textContent = opt;
+          b.addEventListener('click', () => choose(i, b));
+          answersEl.appendChild(b);
+        });
+      }
+
+      function choose(i, btnEl) {
+        if (!currentQuestion || answered) return;
+        answered = true;
+        total += 1;
+        totalEl.textContent = String(total);
+
+        const all = [...answersEl.querySelectorAll('.ans')];
+        all.forEach((b, idx) => {
+          b.disabled = true;
+          if (idx === currentQuestion.a) b.classList.add('correct');
+        });
+
+        if (i === currentQuestion.a) {
+          correct += 1;
+          correctEl.textContent = String(correct);
+          btnEl.classList.add('correct');
+          feedbackEl.textContent = `أحسنت! ✓ Great job!\nالإجابة صحيحة. السبب: ${currentQuestion.why}`;
+        } else {
+          btnEl.classList.add('wrong');
+          feedbackEl.textContent = `حاول مرة أخرى ✗\nCorrect answer: ${currentQuestion.options[currentQuestion.a]}\nالسبب: ${currentQuestion.why}`;
+        }
+      }
+
+      unitBtns.forEach((b) => {
+        b.addEventListener('click', () => {
+          selectedUnit = Number(b.dataset.unit);
+          markActive(unitBtns, b);
+          if (selectedCat) nextQuestion();
+        });
+      });
+
+      catBtns.forEach((b) => {
+        b.addEventListener('click', () => {
+          selectedCat = b.dataset.cat;
+          markActive(catBtns, b);
+          if (selectedUnit) nextQuestion();
+        });
+      });
+
+      newQBtn.addEventListener('click', nextQuestion);
+    </script>
   </body>
 </html>
