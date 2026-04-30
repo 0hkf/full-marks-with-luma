@@ -184,6 +184,36 @@
         flex-wrap: wrap;
       }
 
+      .credits {
+        margin-top: 16px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .credit-card {
+        border: 4px solid #ccb7f2;
+        border-radius: 24px;
+        padding: 12px;
+        text-align: center;
+        background: #f7f6f8;
+      }
+
+      .credit-label {
+        margin: 0 0 6px;
+        color: #6f8290;
+        font-size: clamp(1rem, 1.9vw, 1.35rem);
+        font-weight: 800;
+      }
+
+      .credit-name {
+        margin: 0;
+        color: #5f4bb2;
+        font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+        font-family: 'Baloo 2', cursive;
+        font-weight: 800;
+      }
+
       @media (max-width: 1024px) {
         .app { padding: 16px; }
         .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -197,6 +227,9 @@
         .top-hero {
           grid-template-columns: 1fr;
           justify-items: center;
+        }
+        .credits {
+          grid-template-columns: 1fr;
         }
       }
     </style>
@@ -245,6 +278,17 @@
       <div class="actions">
         <button class="btn small" id="newQBtn">سؤال جديد</button>
       </div>
+
+      <section class="credits">
+        <article class="credit-card">
+          <p class="credit-label">المنفذة</p>
+          <p class="credit-name">هند اللهيبي</p>
+        </article>
+        <article class="credit-card">
+          <p class="credit-label">مديرة المدرسة</p>
+          <p class="credit-name">عبير الحربي</p>
+        </article>
+      </section>
     </main>
 
     <script>
