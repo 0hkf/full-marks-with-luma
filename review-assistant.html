@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css" />
     <style>
       .assistant-wrap {
-        max-width: 760px;
+        max-width: 820px;
         margin: 0 auto;
       }
 
@@ -68,11 +68,17 @@
       }
 
       .unit-grid {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+
+      .general-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
       }
 
       .cat-grid {
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
       }
 
       .assistant-btn {
@@ -93,6 +99,17 @@
       .assistant-btn.active {
         background: linear-gradient(145deg, #efe1ff 0%, #e8f4ff 100%);
         border-color: #a688e8;
+      }
+
+      .assistant-btn.general-alone {
+        border-color: #c4e7db;
+        color: #2f7b6f;
+        background: #f2fffb;
+      }
+
+      .assistant-btn.general-alone.active {
+        background: linear-gradient(145deg, #dcfff3 0%, #e8f4ff 100%);
+        border-color: #7dcbb8;
       }
 
       .q-area,
@@ -167,27 +184,6 @@
         font-weight: 700;
       }
 
-      details.prompt-box {
-        margin-top: 12px;
-        border-radius: 12px;
-        border: 2px dashed #dfd0f8;
-        padding: 10px;
-        background: #fcf9ff;
-      }
-
-      details.prompt-box summary {
-        cursor: pointer;
-        font-weight: 800;
-        color: #5d4ca0;
-      }
-
-      .prompt-content {
-        margin-top: 8px;
-        font-size: 0.92rem;
-        line-height: 1.8;
-        color: #516f7f;
-      }
-
       @media (max-width: 640px) {
         .input-row {
           grid-template-columns: 1fr;
@@ -207,7 +203,7 @@
 
       <section class="assistant-box">
         <h2 class="assistant-title">Top Goal 2 – Part 2</h2>
-        <p class="assistant-sub">الوحدات 5 و6 و7 | دعم ثنائي اللغة (عربي + English)</p>
+        <p class="assistant-sub">الوحدات 5 و6 و7 | بنك أسئلة شامل + تصحيح فوري</p>
 
         <div class="score-bar">
           <div class="score-item">صح: <span id="correct">0</span></div>
@@ -217,21 +213,25 @@
         <p class="assistant-label">اختاري الوحدة</p>
         <div class="unit-grid" id="unit-grid">
           <button class="assistant-btn unit-btn" data-unit="5">Unit 5<br />Storylines</button>
-          <button class="assistant-btn unit-btn" data-unit="6">Unit 6<br />Outdoor</button>
+          <button class="assistant-btn unit-btn" data-unit="6">Unit 6<br />Outdoor Activities</button>
           <button class="assistant-btn unit-btn" data-unit="7">Unit 7<br />Trips</button>
         </div>
 
-        <p class="assistant-label">نوع السؤال</p>
-        <div class="cat-grid" id="cat-grid">
-          <button class="assistant-btn cat-btn" data-cat="general">General Questions<br />أسئلة عامة</button>
-          <button class="assistant-btn cat-btn" data-cat="vocab">Vocabulary<br />مفردات</button>
-          <button class="assistant-btn cat-btn" data-cat="grammar">Grammar<br />قواعد</button>
-          <button class="assistant-btn cat-btn" data-cat="composition">Composition<br />تعبير</button>
+        <p class="assistant-label">General Questions (لحالها)</p>
+        <div class="general-row">
+          <button class="assistant-btn cat-btn general-alone" data-cat="general">General Questions | أسئلة عامة</button>
+        </div>
+
+        <p class="assistant-label">باقي الأقسام</p>
+        <div class="cat-grid">
+          <button class="assistant-btn cat-btn" data-cat="vocab">Vocabulary + Controlled Writing</button>
+          <button class="assistant-btn cat-btn" data-cat="grammar">Grammar</button>
+          <button class="assistant-btn cat-btn" data-cat="composition">Guided Composition</button>
         </div>
 
         <p class="assistant-label">السؤال</p>
         <div class="q-area" id="qarea">
-          <p class="q-ar">اختاري الوحدة ونوع السؤال للبدء...</p>
+          <p class="q-ar">اختاري الوحدة ثم الفئة للبدء...</p>
         </div>
 
         <p class="assistant-label">إجابتك والتصحيح</p>
@@ -243,146 +243,144 @@
           <button class="assistant-btn" id="nextbtn">سؤال جديد</button>
         </div>
 
-        <p class="hint" id="hint">جاهزة يا بطلة؟ اختاري الوحدة أولاً 🌟</p>
-
-        <details class="prompt-box">
-          <summary>عرض System Prompt (نسخة جاهزة للنسخ)</summary>
-          <div class="prompt-content" id="prompt-content"></div>
-        </details>
+        <p class="hint" id="hint">اختاري الوحدة أولاً ثم نوع السؤال 🌟</p>
       </section>
     </div>
 
     <script>
-      const systemPromptText = `You are a friendly and encouraging English language tutor for Saudi elementary school students.
-You help students review Units 5, 6, and 7 of their English curriculum (Top Goal 2 – Part 2).
-Language: respond in Arabic and English. Explain rules in Arabic, keep examples in English.
-Evaluate answers briefly: Correct = "أحسنت! ✓", Partial = "تقريباً! ✓", Wrong = "حاول مرة أخرى ✗".
-Past Continuous: Subject + was/were + verb-ing.
-While/When: WHILE + long action, WHEN + short action.
-Present Perfect: Subject + have/has + past participle, with just/already/yet.`;
-
       const bank = {
         5: {
           name: 'Storylines',
           general: [
             { q: 'What is your favorite kind of story?', ar: 'ما هو نوع القصة المفضل لديك؟' },
             { q: "What were you doing at 6 o'clock yesterday?", ar: 'ماذا كنت تفعل في الساعة 6 أمس؟' },
-            { q: 'Who is your favorite story character? Why do you like him/her?', ar: 'من شخصيتك المفضلة في القصة؟ ولماذا تحبها؟' },
-            { q: 'What kinds of stories do you dislike? Why?', ar: 'ما أنواع القصص التي تكرهها؟ ولماذا؟' },
-            { q: 'How many acts are there in a story?', ar: 'كم عدد أجزاء القصة؟' },
-            { q: 'What can you draw to plan a story?', ar: 'ما الذي يمكنك رسمه لتخطيط قصة؟' }
+            { q: 'Who is your favorite story character? Why do you like him/her?', ar: 'من شخصيتك المفضلة في القصة؟ ولماذا؟' },
+            { q: 'What kinds of stories do you dislike? Why?', ar: 'ما أنواع القصص التي لا تحبها؟ ولماذا؟' },
+            { q: 'What are the people in stories called?', ar: 'ماذا يُسمّى الأشخاص في القصة؟', expected: ['characters'] },
+            { q: 'Do you have a favorite story? Which is it?', ar: 'هل لديك قصة مفضلة؟ ما هي؟' },
+            { q: 'What two events happen in the third act of a story?', ar: 'ما الحدثان في الفصل الثالث من القصة؟', expected: ['climax and resolution', 'climax, resolution'] },
+            { q: 'What can you draw to plan a story?', ar: 'ما الذي يمكنك رسمه لتخطيط قصة؟', expected: ['storyboard'] }
           ],
           vocab: [
-            { q: 'What type of story creates a feeling of fear?', ar: 'ما نوع القصة التي تخيفك؟' },
-            { q: 'What type of story makes people laugh?', ar: 'ما نوع القصة التي تضحكك؟' },
-            { q: 'A story about an invented future or space is called ___', ar: 'قصة عن المستقبل أو الفضاء تسمى؟' },
-            { q: 'Circle the odd word: cartoon – school – fairy tale – mystery', ar: 'اختر الكلمة الشاذة' },
-            { q: "What does 'whisper' mean?", ar: 'ما معنى كلمة whisper؟' },
-            { q: "What is the opposite of 'beginning'?", ar: 'ما عكس كلمة beginning؟' }
+            { q: 'What type of story creates a feeling of fear?', ar: 'ما نوع القصة التي تخلق شعور الخوف؟', expected: ['horror'] },
+            { q: 'What type of story makes people laugh?', ar: 'ما نوع القصة التي تُضحك الناس؟', expected: ['comedy'] },
+            { q: 'A story about an invented future or space is called _____.', ar: 'قصة عن مستقبل مخترع أو الفضاء تسمى؟', expected: ['sci-fi', 'science fiction'] },
+            { q: 'Circle the odd word: cartoon – school – fairy tale – mystery', ar: 'اختاري الكلمة الشاذة', expected: ['school'] },
+            { q: "What does 'whisper' mean?", ar: 'ما معنى whisper؟', expected: ['speak quietly', 'talk quietly', 'يهمس'] },
+            { q: "What is the opposite of 'beginning'?", ar: 'ما عكس beginning؟', expected: ['ending'] },
+            { q: 'Circle the odd word: love – like – hate – whisper', ar: 'اختاري الكلمة الشاذة', expected: ['whisper'] },
+            { q: 'It is a movie about real people or facts. What is it?', ar: 'فيلم عن أشخاص حقيقيين أو حقائق، ما نوعه؟', expected: ['documentary'] },
+            { q: 'In this kind of story, a detective solves a crime.', ar: 'في هذا النوع يحل المحقق جريمة، ما النوع؟', expected: ['mystery'] },
+            { q: 'It is an exciting story full of action.', ar: 'قصة مشوقة مليئة بالأحداث، ما النوع؟', expected: ['thriller'] }
           ],
           grammar: [
-            { q: 'Choose: I ( was / were / is ) watching a movie.', ar: 'اختر الإجابة الصحيحة' },
-            { q: "Make a suggestion using 'Why don't we' about watching a movie.", ar: 'اصنع اقتراحاً باستخدام Why don\'t we' },
-            { q: 'Change to negative: They were watching a movie.', ar: 'حوّل الجملة للنفي' },
-            { q: 'Order the words: were / covering / your / You / ears', ar: 'رتب الكلمات' },
-            { q: 'Correct the word: They were ( watch ) a play.', ar: 'صحح الكلمة' },
-            { q: 'Correct: How about ( see ) a horror movie?', ar: 'صحح الفعل' }
+            { q: 'Choose: I (was / were / is / are) watching a movie.', ar: 'اختاري الصحيح', expected: ['was'] },
+            { q: 'Choose: They (was / were / is / am) screaming during the horror movie.', ar: 'اختاري الصحيح', expected: ['were'] },
+            { q: 'Choose: We (was / were / is / am) not singing in the musical.', ar: 'اختاري الصحيح', expected: ['were'] },
+            { q: 'Choose: She (was / were / is / are) not watching a play.', ar: 'اختاري الصحيح', expected: ['was'] },
+            { q: 'Choose: (Was / Were / Is / Does) you enjoying the cartoon?', ar: 'اختاري الصحيح', expected: ['were'] },
+            { q: 'Choose: Why (was / were / do / does) he acting in a western?', ar: 'اختاري الصحيح', expected: ['was'] },
+            { q: 'Change to negative: They were watching a movie.', ar: 'حوّلي الجملة للنفي', expected: ["they weren't watching a movie", 'they were not watching a movie'] },
+            { q: 'Order the words: were / covering / your / You / ears', ar: 'رتبي الكلمات', expected: ['you were covering your ears'] },
+            { q: 'Correct: They were (watch) a play.', ar: 'صححي الكلمة', expected: ['watching'] },
+            { q: 'Correct: How about (see) a horror movie?', ar: 'صححي الفعل', expected: ['seeing'] },
+            { q: "What about (watch / watching / watched / watches) a movie?", ar: 'اختاري الصحيح', expected: ['watching'] },
+            { q: "How about (see / seeing / saw / sees) a horror movie?", ar: 'اختاري الصحيح', expected: ['seeing'] },
+            { q: "Why don't we (choose / choosing / chose / chooses) a musical?", ar: 'اختاري الصحيح', expected: ['choose'] },
+            { q: 'Order: Why / don’t / we / work / on / our / storyboard / ?', ar: 'رتبي الجملة', expected: ["why don't we work on our storyboard"] },
+            { q: 'Correct: Adam (were) acting in a sci-fi movie.', ar: 'صححي الخطأ', expected: ['was'] }
           ],
           composition: [
-            { q: "Write 3 sentences about your favorite movie scene using: 'What I loved was...' and 'The great thing about...'", ar: 'اكتب 3 جمل عن مشهدك المفضل في الفيلم' }
+            { q: 'Write 3 sentences about your favorite movie scene using: What I loved was... and The great thing about...', ar: 'اكتبي 3 جمل عن مشهدك المفضل باستخدام العبارات المطلوبة.' },
+            { q: 'Write a short paragraph: What movie? what type? what happens? what you like/dislike?', ar: 'اكتبي فقرة قصيرة وفق الأسئلة الموجهة.' }
           ]
         },
         6: {
           name: 'Outdoor Activities',
           general: [
-            { q: 'What activities do you do outside?', ar: 'ما الأنشطة التي تمارسها في الخارج؟' },
-            { q: 'Which outdoor activities do you want to try? Why?', ar: 'ما الأنشطة الخارجية التي تريد تجربتها؟' },
+            { q: 'What activities do you do outside?', ar: 'ما الأنشطة التي تمارسينها في الخارج؟' },
+            { q: 'Which activities do you want to try? Why?', ar: 'ما الأنشطة التي تريدين تجربتها؟ ولماذا؟' },
             { q: 'What is your worst fear?', ar: 'ما أشد مخاوفك؟' },
-            { q: 'What do you know about safety in outdoor activities?', ar: 'ماذا تعرف عن الأمان في الأنشطة الخارجية؟' },
-            { q: 'Do you prefer activities outdoors or at home? Why?', ar: 'هل تفضل الأنشطة الخارجية أم في المنزل؟' },
-            { q: 'What is a cliff?', ar: 'ما هو الجرف؟' }
+            { q: 'What do you know about safety in outdoor activities?', ar: 'ماذا تعرفين عن السلامة في الأنشطة الخارجية؟' },
+            { q: 'Do you prefer activities outdoors or at home? Why?', ar: 'هل تفضلين الأنشطة الخارجية أم المنزلية؟ ولماذا؟' },
+            { q: 'What is a cliff?', ar: 'ما معنى cliff؟', expected: ['a high rock edge', 'high edge', 'جرف'] },
+            { q: 'Things we need for rafting?', ar: 'ما الأشياء التي نحتاجها للتجديف؟' },
+            { q: 'The opposite of outdoor is ...', ar: 'عكس outdoor هو ...', expected: ['indoor', 'indoors'] }
           ],
           vocab: [
-            { q: 'Name 3 things you need for rafting.', ar: 'اذكر 3 أشياء تحتاجها للتجديف' },
-            { q: 'Circle the odd word: hiking – camping – tent – fishing', ar: 'اختر الكلمة الشاذة' },
-            { q: 'Two water activities: ___ and ___', ar: 'اذكر نشاطين مائيين' },
-            { q: 'One activity that involves long walks is ___', ar: 'نشاط يتضمن مشياً طويلاً' },
-            { q: 'What equipment do you wear for protection while cycling?', ar: 'ما معدات الحماية أثناء ركوب الدراجة؟' },
-            { q: "What is the opposite of 'outdoors'?", ar: 'ما عكس كلمة outdoors؟' }
+            { q: 'Name 3 things you need for rafting.', ar: 'اذكري 3 أشياء للتجديف.' },
+            { q: 'Circle the odd word: hiking – camping – tent – fishing', ar: 'اختاري الكلمة الشاذة', expected: ['tent'] },
+            { q: 'Two water activities: ___ and ___', ar: 'اذكري نشاطين مائيين.' },
+            { q: 'One activity that involves long walks is ___', ar: 'نشاط فيه مشي طويل هو ...', expected: ['hiking', 'backpacking'] },
+            { q: 'What equipment do you wear for protection while cycling?', ar: 'ما معدات الحماية أثناء ركوب الدراجة؟', expected: ['helmet'] },
+            { q: "What is the opposite of 'outdoors'?", ar: 'ما عكس outdoors؟', expected: ['indoors'] },
+            { q: 'Circle the odd word: canoe – outdoors – helmet – surfboard', ar: 'اختاري الكلمة الشاذة', expected: ['outdoors'] },
+            { q: 'One activity that involves sleeping outdoors is ___', ar: 'نشاط يتضمن النوم في الخارج هو ...', expected: ['camping'] },
+            { q: 'What do you need for mountain biking?', ar: 'ماذا تحتاجين لركوب الدراجة الجبلية؟' },
+            { q: 'Match idea: camping → ?', ar: 'مطابقة: camping تحتاج ...', expected: ['tent'] }
           ],
           grammar: [
-            { q: 'Choose: They ( am / is / were / was ) hiking in the forest.', ar: 'اختر الإجابة الصحيحة' },
-            { q: 'Fill in: While I was hiking, I ___ (see) a snake.', ar: 'أكمل الفراغ بالفعل الصحيح' },
-            { q: "Give an example sentence using 'while' with past continuous.", ar: 'أعطِ مثالاً باستخدام while' },
-            { q: 'Order: for / in / were / days four / tent a / sleeping / We', ar: 'رتب الكلمات' },
-            { q: "Correct: I didn't know what ( knew ) to do.", ar: 'صحح الكلمة' },
-            { q: 'Choose: I ( saw / seeing ) a bear in the forest last weekend!', ar: 'اختر الصحيح' }
+            { q: 'Choose: They (am / is / were / was) hiking in the forest.', ar: 'اختاري الصحيح', expected: ['were'] },
+            { q: 'Fill in: While I was hiking, I ___ (see) a snake.', ar: 'أكملي بالفعل الصحيح', expected: ['saw'] },
+            { q: "Give an example using while/when.", ar: 'أعطي مثالاً باستخدام while أو when.' },
+            { q: 'Order: We / were / sleeping / in / a tent / for / four days', ar: 'رتبي الكلمات', expected: ['we were sleeping in a tent for four days'] },
+            { q: "Correct: I didn't know what (knew) to do.", ar: 'صححي الكلمة', expected: ['know'] },
+            { q: 'Choose: I (saw / seeing) a bear in the forest last weekend.', ar: 'اختاري الصحيح', expected: ['saw'] },
+            { q: 'Choose: When they (arriving / arrived), they set up the tents.', ar: 'اختاري الصحيح', expected: ['arrived'] },
+            { q: 'Fill in: Dad was lighting the campfire ___ I was fishing. (while/when)', ar: 'أكملي while/when', expected: ['while'] },
+            { q: 'Correct: (While) they arrived, they set up the tents.', ar: 'صححي أداة الربط', expected: ['when'] },
+            { q: 'Choose: I was looking at the water when my sandwich (fell / falling) in.', ar: 'اختاري الصحيح', expected: ['fell'] },
+            { q: 'Choose: The kids (were swimming / swam) but had to stop to eat.', ar: 'اختاري الصحيح', expected: ['were swimming'] },
+            { q: 'Choose: Dad didn’t (see / saw) a shark when he was surfing.', ar: 'اختاري الصحيح', expected: ['see'] }
           ],
           composition: [
-            { q: "Write 3–4 sentences about outdoor safety using: 'It\'s important to...' and 'While I was...' and 'You should...'", ar: 'اكتب فقرة عن الأمان في الأنشطة الخارجية' }
+            { q: "Write 3–4 sentences about outdoor safety using: It's important to..., While I was..., You should...", ar: 'اكتبي 3-4 جمل عن السلامة باستخدام العبارات المطلوبة.' },
+            { q: 'Write a blog post about outdoor safety with useful expressions.', ar: 'اكتبي تدوينة قصيرة عن السلامة في الخارج.' }
           ]
         },
         7: {
           name: 'Trips',
           general: [
-            { q: 'What different ways to travel do you know?', ar: 'ما طرق السفر التي تعرفها؟' },
-            { q: 'What is your favorite way to travel and why?', ar: 'ما طريقتك المفضلة في السفر؟' },
-            { q: 'Would you like to travel? How would you feel?', ar: 'هل تحب السفر؟ كيف ستشعر؟' },
+            { q: 'What different ways to travel do you know?', ar: 'ما طرق السفر المختلفة التي تعرفينها؟' },
+            { q: 'What is your favorite way to travel and why?', ar: 'ما وسيلة سفرك المفضلة ولماذا؟' },
+            { q: 'Would you like to travel? How would you feel?', ar: 'هل تحبين السفر؟ كيف ستشعرين؟' },
             { q: 'What is the most exciting or scariest trip you have taken?', ar: 'ما أكثر رحلة ممتعة أو مخيفة قمت بها؟' },
-            { q: 'What field trips have you been on?', ar: 'ما الرحلات المدرسية التي ذهبت إليها؟' },
-            { q: 'What must you present before going on a plane?', ar: 'ماذا تقدم قبل ركوب الطائرة؟' }
+            { q: 'How often do you use a taxi?', ar: 'كم مرة تستخدمين التاكسي؟' },
+            { q: 'What field trips have you been on?', ar: 'ما الرحلات المدرسية التي ذهبتِ إليها؟' },
+            { q: 'Taxi – plane – train are ...', ar: 'Taxi وplane وtrain هي ...', expected: ['means of transportation', 'transportation'] },
+            { q: 'Take off means ...', ar: 'معنى take off هو ...', expected: ['to go up in the sky', 'depart', 'إقلاع'] }
           ],
           vocab: [
-            { q: "What does 'take off' mean?", ar: 'ما معنى take off؟' },
-            { q: 'Circle the odd word: security – passenger – suitcase – climbing', ar: 'اختر الكلمة الشاذة' },
-            { q: 'A document you need to travel abroad is ___', ar: 'وثيقة تحتاجها للسفر للخارج' },
-            { q: "What is the opposite of 'check in'?", ar: 'ما عكس check in؟' },
-            { q: 'Two means of transportation: ___ and ___', ar: 'اذكر وسيلتي نقل' },
-            { q: 'What does a passenger do when they first arrive at a hotel?', ar: 'ماذا يفعل الراكب عند وصوله للفندق؟' }
+            { q: "What does 'take off' mean?", ar: 'ما معنى take off؟', expected: ['to go up in the sky', 'depart', 'إقلاع'] },
+            { q: 'Circle the odd word: security – passenger – suitcase – climbing', ar: 'اختاري الكلمة الشاذة', expected: ['climbing'] },
+            { q: 'A document you need to travel abroad is _____.', ar: 'وثيقة تحتاجينها للسفر للخارج هي ...', expected: ['passport'] },
+            { q: "What is the opposite of 'check in'?", ar: 'ما عكس check in؟', expected: ['check out'] },
+            { q: 'Two means of transportation: ___ and ___', ar: 'اذكري وسيلتي نقل.' },
+            { q: 'What does a passenger do when they first arrive at a hotel?', ar: 'ماذا يفعل الراكب عند وصوله الفندق؟', expected: ['check in'] },
+            { q: 'Circle the odd word: already – we – just – yet', ar: 'اختاري الكلمة الشاذة', expected: ['we'] },
+            { q: 'Match: arrive = ?', ar: 'مطابقة: arrive تعني ...', expected: ['get to a place', 'reach', 'يصل'] },
+            { q: 'Write a phrasal verb that means discover information.', ar: 'اكتبي phrasal verb بمعنى يكتشف معلومات.', expected: ['find out'] },
+            { q: 'Write a phrasal verb that means leave a place for rest.', ar: 'اكتبي phrasal verb بمعنى يبتعد عن المكان.', expected: ['get away'] }
           ],
           grammar: [
-            { q: 'Choose: He ( have / has / is ) called the taxi.', ar: 'اختر الصحيح' },
-            { q: 'Make negative: You have travelled on the airplane.', ar: 'حوّل الجملة للنفي' },
-            { q: "Fill in with just/already/yet: The plane hasn't taken off ___.", ar: 'أكمل بـ just أو already أو yet' },
-            { q: 'Write the past participle of: speak, write, buy, fly', ar: 'اكتب التصريف الثالث' },
-            { q: 'Order: plane / My / have / parents / the / tickets / bought /.', ar: 'رتب الكلمات' },
-            { q: 'Correct: I have ( visit ) the beach before.', ar: 'صحح الكلمة' }
+            { q: 'Choose: He (have / has / is) called the taxi.', ar: 'اختاري الصحيح', expected: ['has'] },
+            { q: 'Make negative: You have travelled on the airplane.', ar: 'حوّلي الجملة للنفي', expected: ["you haven't travelled on the airplane", 'you have not travelled on the airplane'] },
+            { q: "Fill in: The plane hasn't taken off ___ (just/already/yet)", ar: 'أكملي الكلمة الصحيحة', expected: ['yet'] },
+            { q: 'Write the past participle of: speak, write, buy, fly', ar: 'اكتبي التصريف الثالث', expected: ['spoken written bought flown'] },
+            { q: 'Order: plane / My / have / parents / the / tickets / bought /.', ar: 'رتبي الكلمات', expected: ['my parents have bought the plane tickets'] },
+            { q: 'Correct: I have (visit) the beach before.', ar: 'صححي الكلمة', expected: ['visited'] },
+            { q: 'Choose: The plane (has / have) departed.', ar: 'اختاري الصحيح', expected: ['has'] },
+            { q: 'Fill in: Mom has ___ printed the tickets. (just/already/yet)', ar: 'أكملي just/already/yet', expected: ['already', 'just'] },
+            { q: 'Correct: My mom (have) called the taxi.', ar: 'صححي الفعل', expected: ['has'] },
+            { q: "Make affirmative: I haven't visited the beach.", ar: 'حوّلي الجملة للإثبات', expected: ['i have visited the beach'] },
+            { q: 'Choose: She hasn’t packed her suitcase (just/already/yet).', ar: 'اختاري الصحيح', expected: ['yet'] },
+            { q: 'Choose: The taxi has (just/yet) arrived.', ar: 'اختاري الصحيح', expected: ['just'] }
           ],
           composition: [
-            { q: "Write a short blog post about a field trip using: 'I have planned...' and 'They have just...' and 'You can...'", ar: 'اكتب بوست مدونة قصير عن رحلة ميدانية' }
+            { q: 'Write a short blog post about a field trip using: I have planned..., They have just..., You can..., The directions...', ar: 'اكتبي تدوينة قصيرة باستخدام العبارات المطلوبة.' },
+            { q: 'Write 4-5 sentences about your trip plan in Present Perfect.', ar: 'اكتبي 4-5 جمل عن خطة رحلة بصيغة Present Perfect.' }
           ]
         }
-      };
-
-      const answerKey = {
-        'choose i was were is watching a movie': ['was'],
-        'change to negative they were watching a movie': ["they weren't watching a movie", 'they were not watching a movie'],
-        'order the words were covering your you ears': ['you were covering your ears'],
-        'correct the word they were watch a play': ['watching'],
-        'correct how about see a horror movie': ['seeing'],
-        'what type of story creates a feeling of fear': ['horror'],
-        'what type of story makes people laugh': ['comedy'],
-        'a story about an invented future or space is called': ['sci-fi', 'science fiction', 'scifi'],
-        'circle the odd word cartoon school fairy tale mystery': ['school'],
-        'what is the opposite of beginning': ['ending'],
-        'choose they am is were was hiking in the forest': ['were'],
-        'fill in while i was hiking i see a snake': ['saw'],
-        'order for in were days four tent a sleeping we': ['we were sleeping in a tent for four days'],
-        'correct i did not know what knew to do': ['know'],
-        'choose i saw seeing a bear in the forest last weekend': ['saw'],
-        'circle the odd word hiking camping tent fishing': ['tent'],
-        'one activity that involves long walks is': ['hiking', 'backpacking'],
-        'what is the opposite of outdoors': ['indoors'],
-        'choose he have has is called the taxi': ['has'],
-        'make negative you have travelled on the airplane': ["you haven't travelled on the airplane", 'you have not travelled on the airplane'],
-        'fill in with justalreadyyet the plane has not taken off': ['yet'],
-        'write the past participle of speak write buy fly': ['spoken written bought flown'],
-        'order plane my have parents the tickets bought': ['my parents have bought the plane tickets'],
-        'correct i have visit the beach before': ['visited'],
-        'what does take off mean': ['leave the ground', 'to leave the ground', 'depart', 'إقلاع'],
-        'circle the odd word security passenger suitcase climbing': ['climbing'],
-        'a document you need to travel abroad is': ['passport'],
-        'what is the opposite of check in': ['check out']
       };
 
       const unitBtnEls = Array.from(document.querySelectorAll('.unit-btn'));
@@ -395,9 +393,6 @@ Present Perfect: Subject + have/has + past participle, with just/already/yet.`;
       const nextBtn = document.getElementById('nextbtn');
       const correctEl = document.getElementById('correct');
       const totalEl = document.getElementById('total');
-      const promptContent = document.getElementById('prompt-content');
-
-      promptContent.textContent = systemPromptText;
 
       let unit = null;
       let cat = null;
@@ -412,13 +407,6 @@ Present Perfect: Subject + have/has + past participle, with just/already/yet.`;
           .replace(/[\u201c\u201d]/g, '"')
           .replace(/[^a-z0-9\u0600-\u06ff\s\-']/g, ' ')
           .replace(/\s+/g, ' ')
-          .trim();
-      }
-
-      function normalizeQ(question) {
-        return normalize(question)
-          .replace(/\b___\b/g, '')
-          .replace(/\bwhile\b|\bwhen\b/g, (m) => m)
           .trim();
       }
 
@@ -450,20 +438,30 @@ Present Perfect: Subject + have/has + past participle, with just/already/yet.`;
         sendBtn.disabled = false;
       }
 
-      function evaluateOpenAnswer(question, answer, category) {
+      function evaluateOpenAnswer(answer, category) {
         const a = normalize(answer);
 
         if (category === 'composition') {
-          const hasCore = containsAny(a, ['what i loved was', 'the great thing about', 'it is important to', 'while i was', 'you should', 'i have planned', 'they have just', 'you can']);
-          if (hasCore && a.split(' ').length > 7) {
+          const hasCore = containsAny(a, [
+            'what i loved was',
+            'the great thing about',
+            'it is important to',
+            'while i was',
+            'you should',
+            'i have planned',
+            'they have just',
+            'you can',
+            'the directions'
+          ]);
+          if (hasCore && a.split(' ').length > 8) {
             return {
               ok: true,
-              text: 'أحسنت! ✓\nGreat paragraph idea! Keep using unit expressions.\nرائع! استمري على نفس الأسلوب.'
+              text: 'أحسنت! ✓\nExcellent writing! Keep your sentences clear and simple.\nممتازة! تابعي بنفس الأسلوب.'
             };
           }
           return {
             ok: false,
-            text: 'تقريباً! ✓\nAdd useful expressions from the unit (e.g., What I loved was...).\nأضيفي تعبيرات الوحدة ثم أعيدي المحاولة.'
+            text: 'تقريباً! ✓\nAdd 1-2 useful expressions from the unit.\nأضيفي تعبيرات الوحدة ثم أعيدي المحاولة.'
           };
         }
 
@@ -471,23 +469,40 @@ Present Perfect: Subject + have/has + past participle, with just/already/yet.`;
           if (a.split(' ').length >= 4) {
             return {
               ok: true,
-              text: 'أحسنت! ✓\nNice personal answer in English.\nإجابة جميلة، جربي إضافة سبب أو مثال.'
+              text: 'أحسنت! ✓\nNice personal answer in English.\nإجابة جميلة، جربي إضافة سبب بسيط.'
             };
           }
           return {
             ok: false,
-            text: 'تقريباً! ✓\nWrite a little longer answer (at least one full sentence).\nاكتبي جملة كاملة مع سبب بسيط.'
+            text: 'تقريباً! ✓\nWrite one full sentence with a reason.\nاكتبي جملة كاملة مع سبب.'
           };
         }
 
         return {
           ok: false,
-          text: 'حاول مرة أخرى ✗\nThink about the key word from this unit.\nفكري في مفردات الوحدة أولاً.'
+          text: 'تقريباً! ✓\nTry using key vocabulary from the unit.\nاستخدمي كلمات الوحدة الأساسية.'
         };
       }
 
-      function evaluateAnswer(question, answer, category) {
-        const qKey = normalizeQ(question);
+      function evaluateExpected(q, answer) {
+        if (!q.expected || !q.expected.length) {
+          return null;
+        }
+
+        const a = normalize(answer);
+
+        if (q.q.toLowerCase().includes('past participle of: speak, write, buy, fly')) {
+          const needed = ['spoken', 'written', 'bought', 'flown'];
+          return needed.every((w) => a.includes(w));
+        }
+
+        return q.expected.some((item) => {
+          const e = normalize(item);
+          return a === e || a.includes(e);
+        });
+      }
+
+      function evaluateAnswer(questionObj, answer, category) {
         const a = normalize(answer);
 
         if (!a) {
@@ -495,88 +510,27 @@ Present Perfect: Subject + have/has + past participle, with just/already/yet.`;
         }
 
         if (category === 'general' || category === 'composition') {
-          return evaluateOpenAnswer(question, answer, category);
+          return evaluateOpenAnswer(answer, category);
         }
 
-        if (qKey.includes('make a suggestion using why don')) {
-          const ok = a.includes('why don') && /\bwatch\b/.test(a);
-          return ok
-            ? { ok: true, text: "أحسنت! ✓\nModel: Why don't we watch a movie?\nالترجمة: لماذا لا نشاهد فيلماً؟" }
-            : { ok: false, text: "حاول مرة أخرى ✗\nModel: Why don't we watch a movie?\nاستخدمي Why don't we + base verb." };
-        }
-
-        if (qKey.includes('give an example sentence using while')) {
-          const ok = a.includes('while') && (a.includes('was') || a.includes('were'));
-          return ok
-            ? { ok: true, text: 'أحسنت! ✓\nModel: While I was hiking, I saw a snake.\nالترجمة: بينما كنت أتسلق، رأيت أفعى.' }
-            : { ok: false, text: 'تقريباً! ✓\nUse: While + was/were + verb-ing, then short action.\nمثال: While I was hiking, I saw a snake.' };
-        }
-
-        if (qKey.includes('name 3 things you need for rafting')) {
-          const words = ['life jacket', 'helmet', 'raft', 'paddle', 'water', 'flashlight'];
-          let count = 0;
-          words.forEach((w) => {
-            if (a.includes(normalize(w))) {
-              count += 1;
-            }
-          });
-          return count >= 2
-            ? { ok: true, text: 'أحسنت! ✓\nGood items for rafting (life jacket, helmet, raft).\nإجابة مناسبة وآمنة.' }
-            : { ok: false, text: 'تقريباً! ✓\nTry 3 items: life jacket, helmet, raft.\nاذكري ثلاث أدوات واضحة.' };
-        }
-
-        if (qKey.includes('two water activities')) {
-          const water = ['surfing', 'canoeing', 'rafting', 'fishing'];
-          const hits = water.filter((w) => a.includes(w)).length;
-          return hits >= 2
-            ? { ok: true, text: 'أحسنت! ✓\nCorrect water activities.\nإجابة ممتازة.' }
-            : { ok: false, text: 'حاول مرة أخرى ✗\nExamples: surfing and rafting.\nمثال: surfing, canoeing.' };
-        }
-
-        if (qKey.includes('what equipment do you wear for protection while cycling')) {
-          const ok = containsAny(a, ['helmet']);
-          return ok
-            ? { ok: true, text: 'أحسنت! ✓\nModel: You should wear a helmet.\nالترجمة: يجب أن ترتدي خوذة.' }
-            : { ok: false, text: 'حاول مرة أخرى ✗\nThe key answer is: helmet.\nالإجابة الأساسية: خوذة.' };
-        }
-
-        if (qKey.includes('two means of transportation')) {
-          const transport = ['taxi', 'subway', 'plane', 'airplane', 'train', 'bus', 'railroad'];
-          const hits = transport.filter((w) => a.includes(w)).length;
-          return hits >= 2
-            ? { ok: true, text: 'أحسنت! ✓\nGreat transportation examples.\nإجابة صحيحة.' }
-            : { ok: false, text: 'تقريباً! ✓\nWrite two means like: taxi and subway.\nاكتبي وسيلتين نقل.' };
-        }
-
-        if (qKey.includes('what does a passenger do when they first arrive at a hotel')) {
-          const ok = a.includes('check in');
-          return ok
-            ? { ok: true, text: 'أحسنت! ✓\nModel: A passenger checks in.\nالترجمة: يقوم بتسجيل الدخول.' }
-            : { ok: false, text: 'حاول مرة أخرى ✗\nCorrect answer: check in.\nالإجابة: check in.' };
-        }
-
-        const expected = answerKey[qKey];
-        if (expected) {
-          const matched = expected.some((candidate) => {
-            const c = normalize(candidate);
-            if (qKey.includes('write the past participle')) {
-              return ['spoken', 'written', 'bought', 'flown'].every((word) => a.includes(word));
-            }
-            return a === c || a.includes(c);
-          });
-
-          if (matched) {
-            const model = expected[0];
-            return { ok: true, text: `أحسنت! ✓\nModel: ${model}\nإجابة ممتازة يا بطلة.` };
-          }
-
+        const expectedResult = evaluateExpected(questionObj, answer);
+        if (expectedResult === true) {
+          const model = questionObj.expected ? questionObj.expected[0] : 'Great answer';
           return {
-            ok: false,
-            text: `حاول مرة أخرى ✗\nThe correct answer is: ${expected[0]}\nراجعي القاعدة ثم أعيدي المحاولة.`
+            ok: true,
+            text: `أحسنت! ✓\nModel answer: ${model}\nإجابة صحيحة يا بطلة.`
           };
         }
 
-        return evaluateOpenAnswer(question, answer, category);
+        if (expectedResult === false) {
+          const model = questionObj.expected ? questionObj.expected[0] : 'Check your unit notes';
+          return {
+            ok: false,
+            text: `حاول مرة أخرى ✗\nThe correct answer is: ${model}\nراجعي القاعدة ثم أعيدي المحاولة.`
+          };
+        }
+
+        return evaluateOpenAnswer(answer, category);
       }
 
       function handleAnswer() {
@@ -596,14 +550,15 @@ Present Perfect: Subject + have/has + past participle, with just/already/yet.`;
         totalCount += 1;
         totalEl.textContent = totalCount;
 
-        const result = evaluateAnswer(currentQ.q, val, cat);
+        const result = evaluateAnswer(currentQ, val, cat);
         addMsg(result.text, 'ai');
+
         if (result.ok) {
           correctCount += 1;
           correctEl.textContent = correctCount;
           hint.textContent = 'ممتاز! اضغطي "سؤال جديد" للمواصلة 🌟';
         } else {
-          hint.textContent = 'أحسنتي المحاولة، جربي سؤال جديد أو حسّني الإجابة 💫';
+          hint.textContent = 'أحسنتِ المحاولة، جربي مرة ثانية 💫';
         }
       }
 
