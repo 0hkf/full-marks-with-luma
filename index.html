@@ -37,10 +37,31 @@
 
       .title {
         margin: 0;
-        text-align: center;
         color: var(--violet-dark);
         font-family: 'Baloo 2', cursive;
         font-size: clamp(2rem, 5vw, 3.6rem);
+      }
+
+      .top-hero {
+        display: grid;
+        grid-template-columns: 1fr 210px;
+        gap: 14px;
+        align-items: center;
+        margin-bottom: 4px;
+      }
+
+      .hero-text {
+        text-align: center;
+      }
+
+      .hero-girl {
+        width: 100%;
+        max-width: 210px;
+        border-radius: 26px;
+        border: 4px solid #ccb7f2;
+        box-shadow: 0 10px 20px rgba(96, 75, 178, 0.18);
+        object-fit: cover;
+        aspect-ratio: 4 / 5;
       }
 
       .subtitle {
@@ -163,14 +184,6 @@
         flex-wrap: wrap;
       }
 
-      .footer {
-        margin-top: 14px;
-        text-align: center;
-        font-size: 1.2rem;
-        font-weight: 800;
-        color: #607786;
-      }
-
       @media (max-width: 1024px) {
         .app { padding: 16px; }
         .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -181,13 +194,22 @@
         .app { border-radius: 20px; padding: 12px; }
         .grid-3 { grid-template-columns: 1fr; }
         .section-title { text-align: center; }
+        .top-hero {
+          grid-template-columns: 1fr;
+          justify-items: center;
+        }
       }
     </style>
   </head>
   <body>
     <main class="app">
-      <h1 class="title">Top Goal 2 – Part 2</h1>
-      <p class="subtitle">الوحدات 5 و6 و7 | بنك أسئلة شامل + تصحيح فوري</p>
+      <div class="top-hero">
+        <div class="hero-text">
+          <h1 class="title">Top Goal 2 – Part 2</h1>
+          <p class="subtitle">الوحدات 5 و6 و7 | بنك أسئلة شامل + تصحيح فوري</p>
+        </div>
+        <img class="hero-girl" src="assets/luma-character.jpeg" alt="Girl character" />
+      </div>
 
       <div class="score-bar">
         <div class="score-pill">صح: <span id="correctCount">0</span></div>
@@ -223,8 +245,6 @@
       <div class="actions">
         <button class="btn small" id="newQBtn">سؤال جديد</button>
       </div>
-
-      <div class="footer">المنفذة/ هند اللهيبي</div>
     </main>
 
     <script>
