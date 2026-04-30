@@ -1,0 +1,59 @@
+<svg width="520" height="620" viewBox="0 0 520 620" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Girl character illustration">
+  <defs>
+    <linearGradient id="bg" x1="60" y1="40" x2="460" y2="580" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F4EEFF"/>
+      <stop offset="1" stop-color="#E8F7FF"/>
+    </linearGradient>
+    <linearGradient id="hair" x1="180" y1="120" x2="356" y2="330" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#B86D43"/>
+      <stop offset="1" stop-color="#8C4F2D"/>
+    </linearGradient>
+    <linearGradient id="dress" x1="152" y1="360" x2="364" y2="560" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A993EF"/>
+      <stop offset="1" stop-color="#8B77D8"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="12" y="12" width="496" height="596" rx="46" fill="url(#bg)" stroke="#D4C2F8" stroke-width="8"/>
+
+  <path d="M105 515C105 441 157 375 260 375C363 375 415 441 415 515V548H105V515Z" fill="url(#dress)"/>
+  <ellipse cx="260" cy="560" rx="124" ry="20" fill="#D9E7F3"/>
+
+  <path d="M166 188C166 126 206 88 260 88C314 88 354 126 354 188V250C354 306 312 347 260 347C208 347 166 306 166 250V188Z" fill="#FFE6D3"/>
+  <path d="M160 240C133 236 133 292 165 289" stroke="#F3C8A6" stroke-width="8" stroke-linecap="round"/>
+  <path d="M360 240C387 236 387 292 355 289" stroke="#F3C8A6" stroke-width="8" stroke-linecap="round"/>
+
+  <path d="M143 222C143 129 198 68 260 68C322 68 377 129 377 222C377 222 341 196 286 189C232 182 193 196 143 222Z" fill="url(#hair)"/>
+  <path d="M144 223C148 291 188 347 188 347L153 377C153 377 105 319 103 233C101 147 150 97 150 97L178 119C178 119 140 160 144 223Z" fill="url(#hair)"/>
+  <path d="M376 223C372 291 332 347 332 347L367 377C367 377 415 319 417 233C419 147 370 97 370 97L342 119C342 119 380 160 376 223Z" fill="url(#hair)"/>
+
+  <circle cx="224" cy="230" r="18" fill="#2A1F2E"/>
+  <circle cx="296" cy="230" r="18" fill="#2A1F2E"/>
+  <circle cx="219" cy="225" r="5" fill="white"/>
+  <circle cx="291" cy="225" r="5" fill="white"/>
+
+  <path d="M232 286C248 300 272 300 288 286" stroke="#D46561" stroke-width="8" stroke-linecap="round"/>
+  <ellipse cx="208" cy="274" rx="14" ry="8" fill="#FFC6C0"/>
+  <ellipse cx="312" cy="274" rx="14" ry="8" fill="#FFC6C0"/>
+
+  <rect x="198" y="356" width="124" height="112" rx="24" fill="#B69CF3"/>
+  <path d="M198 380H322" stroke="#CEBCF8" stroke-width="6"/>
+  <path d="M198 408H322" stroke="#CEBCF8" stroke-width="6"/>
+  <circle cx="260" cy="442" r="10" fill="#FFD889"/>
+
+  <rect x="130" y="400" width="54" height="108" rx="26" transform="rotate(-20 130 400)" fill="#FFEDE0"/>
+  <rect x="338" y="410" width="52" height="98" rx="24" transform="rotate(16 338 410)" fill="#FFEDE0"/>
+
+  <rect x="325" y="438" width="110" height="84" rx="16" fill="#F5B4C3" stroke="#E58FA2" stroke-width="4"/>
+  <text x="380" y="481" text-anchor="middle" font-size="22" font-family="Baloo 2, Arial" fill="#FFFFFF" font-weight="700">ENGLISH</text>
+
+  <circle cx="112" cy="138" r="18" fill="#F7D76E"/>
+  <path d="M112 116L118 130L134 132L122 143L125 159L112 150L99 159L102 143L90 132L106 130L112 116Z" fill="#F7D76E"/>
+  <path d="M405 154L411 168L427 170L415 181L418 197L405 188L392 197L395 181L383 170L399 168L405 154Z" fill="#B9A5F6"/>
+
+  <rect x="58" y="472" width="150" height="52" rx="16" fill="#A7D9F9" stroke="#86C5EE" stroke-width="3"/>
+  <text x="133" y="505" text-anchor="middle" font-size="20" font-family="Baloo 2, Arial" fill="#2D4B66" font-weight="700">Full Marks</text>
+
+  <rect x="58" y="528" width="150" height="52" rx="16" fill="#FFE5A9" stroke="#F5D17B" stroke-width="3"/>
+  <text x="133" y="561" text-anchor="middle" font-size="20" font-family="Baloo 2, Arial" fill="#6A4E1E" font-weight="700">With Luma</text>
+</svg>
